@@ -50,4 +50,20 @@ class TicketServiceImplTest {
                 () -> ticketService.purchaseTickets(1L, (TicketTypeRequest[]) null));
     }
 
+    @Test
+    @DisplayName("Should throw exception when child or infant tickets are purchased without an adult")
+    void shouldThrowWhenNoAdultTicketsProvided() {
+        TicketTypeRequest child = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 2);
+        TicketTypeRequest infant = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, child));
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, infant));
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, child, infant));
+    }
+
 }
