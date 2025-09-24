@@ -21,6 +21,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
         validateAccountId(accountId);
+        validateTicketRequests(ticketTypeRequests);
     }
 
     private void validateAccountId(Long accountId) {
@@ -28,4 +29,11 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidPurchaseException();
         }
     }
+
+    private void validateTicketRequests(TicketTypeRequest... ticketTypeRequests) {
+        if (ticketTypeRequests == null || ticketTypeRequests.length == 0) {
+            throw new InvalidPurchaseException();
+        }
+    }
 }
+

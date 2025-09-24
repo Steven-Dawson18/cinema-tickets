@@ -39,4 +39,15 @@ class TicketServiceImplTest {
         assertThrows(InvalidPurchaseException.class,
                 () -> ticketService.purchaseTickets(-5L, adult));
     }
+
+    @Test
+    @DisplayName("Should throw exception when no ticket requests are provided")
+    void shouldThrowWhenNoTicketRequestsProvided() {
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L));
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, (TicketTypeRequest[]) null));
+    }
+
 }

@@ -1,15 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: uk.gov.dwp.uc.pairtest.TicketServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.032 s <<< FAILURE! -- in uk.gov.dwp.uc.pairtest.TicketServiceImplTest
-uk.gov.dwp.uc.pairtest.TicketServiceImplTest.shouldThrowWhenAccountIdIsInvalid -- Time elapsed: 1.010 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: Expected uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException to be thrown, but nothing was thrown.
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
-	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
-	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
-	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3128)
-	at uk.gov.dwp.uc.pairtest.TicketServiceImplTest.shouldThrowWhenAccountIdIsInvalid(TicketServiceImplTest.java:33)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.128 s -- in uk.gov.dwp.uc.pairtest.TicketServiceImplTest
