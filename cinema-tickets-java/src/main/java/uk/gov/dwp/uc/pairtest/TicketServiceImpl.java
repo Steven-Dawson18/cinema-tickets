@@ -22,6 +22,12 @@ public class TicketServiceImpl implements TicketService {
     public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
         validateAccountId(accountId);
         validateTicketRequests(ticketTypeRequests);
+
+        int totalAmount = calculateTotalAmount(ticketTypeRequests);
+        int totalSeats = calculateSeats(ticketTypeRequests);
+
+        ticketPaymentService.makePayment(accountId, totalAmount);
+        seatReservationService.reserveSeat(accountId, totalSeats);
     }
 
     private void validateAccountId(Long accountId) {
@@ -55,5 +61,28 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidPurchaseException();
         }
     }
+
+    private int calculateTotalAmount(TicketTypeRequest... requests) {
+        int total = 0;
+        for (TicketTypeRequest req : requests) {
+            switch (req.getTicketType()) {
+                case ADULT -> total += req.getNoOfTickets() * 25;
+                case CHILD -> total += req.getNoOfTickets() * 15;
+                case INFANT -> total += 0;
+            }
+        }
+        return total;
+    }
+
+    private int calculateSeats(TicketTypeRequest... requests) {
+        int seats = 0;
+        for (TicketTypeRequest req : requests) {
+            if (req.getTicketType() != TicketTypeRequest.Type.INFANT) {
+                seats += req.getNoOfTickets();
+            }
+        }
+        return seats;
+    }
+
 }
 
