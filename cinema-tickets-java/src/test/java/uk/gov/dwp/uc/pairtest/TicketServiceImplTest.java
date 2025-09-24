@@ -9,8 +9,7 @@ import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @DisplayName("TicketServiceImplTest")
 class TicketServiceImplTest {
@@ -94,6 +93,18 @@ class TicketServiceImplTest {
 
         // infants don't get seats therefore 2 adults + 3 children = 5
         verify(seatService).reserveSeat(accountId, 5);
+    }
+
+    @Test
+    @DisplayName("Should throw exception if more than 25 tickets")
+    void shouldThrowWhenMoreThan25TicketsPurchased() {
+        TicketTypeRequest adults = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 20);
+        TicketTypeRequest children = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 6);
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, adults, children));
+
+        verifyNoInteractions(paymentService, seatService);
     }
 
 }

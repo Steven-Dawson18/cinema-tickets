@@ -44,12 +44,14 @@ public class TicketServiceImpl implements TicketService {
         int adultCount = 0;
         int childCount = 0;
         int infantCount = 0;
+        int totalTickets = 0;
 
         for (TicketTypeRequest req : ticketTypeRequests) {
             if (req == null || req.getTicketType() == null || req.getNoOfTickets() <= 0) {
                 throw new InvalidPurchaseException();
             }
 
+            totalTickets += req.getNoOfTickets();
             switch (req.getTicketType()) {
                 case ADULT -> adultCount += req.getNoOfTickets();
                 case CHILD -> childCount += req.getNoOfTickets();
@@ -60,7 +62,13 @@ public class TicketServiceImpl implements TicketService {
         if (adultCount == 0 && (childCount > 0 || infantCount > 0)) {
             throw new InvalidPurchaseException();
         }
+
+        if (totalTickets > 25) {
+            throw new InvalidPurchaseException();
+        }
+
     }
+
 
     private int calculateTotalAmount(TicketTypeRequest... requests) {
         int total = 0;
