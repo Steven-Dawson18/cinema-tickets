@@ -107,4 +107,15 @@ class TicketServiceImplTest {
         verifyNoInteractions(paymentService, seatService);
     }
 
+    @Test
+    @DisplayName("Should throw exception if there are more infants than adults")
+    void shouldThrowWhenInfantsExceedAdults() {
+        TicketTypeRequest oneAdult = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 1);
+        TicketTypeRequest twoInfants = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 2);
+
+        assertThrows(InvalidPurchaseException.class,
+                () -> ticketService.purchaseTickets(1L, oneAdult, twoInfants));
+
+        verifyNoInteractions(paymentService, seatService);
+    }
 }

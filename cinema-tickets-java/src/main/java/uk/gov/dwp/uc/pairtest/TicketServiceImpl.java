@@ -67,6 +67,10 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidPurchaseException();
         }
 
+        if (infantCount > adultCount) {
+            throw new InvalidPurchaseException();
+        }
+
     }
 
 
