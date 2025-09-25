@@ -145,13 +145,10 @@ public class TicketServiceImpl implements TicketService {
      * @return the total number of seats to reserve
      */
     private int calculateSeats(TicketTypeRequest... requests) {
-        int seats = 0;
-        for (TicketTypeRequest req : requests) {
-            if (req.getTicketType() != TicketTypeRequest.Type.INFANT) {
-                seats += req.getNoOfTickets();
-            }
-        }
-        return seats;
+        return Arrays.stream(requests)
+                .filter(req -> req.getTicketType() != TicketTypeRequest.Type.INFANT)
+                .mapToInt(TicketTypeRequest::getNoOfTickets)
+                .sum();
     }
 
 }
