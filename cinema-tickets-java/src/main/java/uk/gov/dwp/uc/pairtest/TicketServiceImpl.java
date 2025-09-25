@@ -5,6 +5,8 @@ import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
+import java.util.Arrays;
+
 /**
  * Implementation of TicketService that validates requests,
  * calculates totals, processes payments, and reserves seats.
@@ -14,6 +16,11 @@ public class TicketServiceImpl implements TicketService {
      * Should only have private methods other than the one below.
      */
 
+    // Improve maintainability with constants
+    private static final int ADULT_TICKET_PRICE = 25;
+    private static final int CHILD_TICKET_PRICE = 15;
+    private static final int INFANT_TICKET_PRICE = 0;
+    private static final int MAX_TICKETS = 25;
     private final TicketPaymentService ticketPaymentService;
     private final SeatReservationService seatReservationService;
 
@@ -102,7 +109,7 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidPurchaseException();
         }
 
-        if (totalTickets > 25) {
+        if (totalTickets > MAX_TICKETS) {
             throw new InvalidPurchaseException();
         }
 
@@ -120,15 +127,13 @@ public class TicketServiceImpl implements TicketService {
      * @return the total payment amount
      */
     private int calculateTotalAmount(TicketTypeRequest... requests) {
-        int total = 0;
-        for (TicketTypeRequest req : requests) {
-            switch (req.getTicketType()) {
-                case ADULT -> total += req.getNoOfTickets() * 25;
-                case CHILD -> total += req.getNoOfTickets() * 15;
-                case INFANT -> total += 0;
-            }
-        }
-        return total;
+        return Arrays.stream(requests)
+                .mapToInt(req -> switch (req.getTicketType()) {
+                    case ADULT -> req.getNoOfTickets() * ADULT_TICKET_PRICE;
+                    case CHILD -> req.getNoOfTickets() * CHILD_TICKET_PRICE;
+                    case INFANT -> INFANT_TICKET_PRICE;
+                })
+                .sum();
     }
 
     /**
